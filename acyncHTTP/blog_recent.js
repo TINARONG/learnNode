@@ -6,13 +6,13 @@ var fs = require("fs");
 //     if(request.url == '/'){
 //         fs.readFile('./title.json',function (err, data) {
 //             if(err) {
-//                 console.err(err);
+//                 console.error(err);
 //                 response.end('Server error.')
 //             } else {
 //                 var titles = JSON.parse(data.toString());
 //                 fs.readFile('./templete.html', function (err, data) {
 //                     if(err){
-//                         console.err(err);
+//                         console.error(err);
 //                         response.end('Servcer error.');
 //                     } else {
 //                         var temp = JSON.parse(data.toString());
@@ -37,18 +37,26 @@ var server = http.createServer(function (request, response) {
 
 function getTitles(res) {
    fs.readFile('./title.json',function (err, data) {
-       if(err){
-           hasError(res, err);
-       } else{
-           getTemplete(JSON.parse(data.toString()), res);
-       }
+       if(err) return hasError(res, err);
+       getTemplete(JSON.parse(data.toString()), res);
+      
    })
 };
 function getTemplete(titles, res) {
-    
+    fs.readFile('./templete.html', function(err, data){
+        if(err) return hasError(res, err);
+        formatHtml(titles, data.toString(), res);
+    })
+}
+
+function formatHtml(titles, tmpl, res) {
+    var html = tmpl.replace('%', titles.join('</li><li>'));
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(html);
 }
 
 function hasError(res, err) {
-    console.err(err);
+    console.error(err);
     res.end('Server error.');
+    
 }
