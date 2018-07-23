@@ -1,0 +1,22 @@
+{
+  "name": "chartroom",
+  "version": "1.0.0",
+  "description": "Minimalist multiroom chat server",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "socket.io": "~2.1.1",
+    "mime": "~2.3.1"
+  },
+  "devDependencies": {
+    "browserify": "~13.0.0",
+    "karma-browserify": "~5.0.1"
+  },
+  "author": "rongrong",
+  "license": "ISC"
+}
