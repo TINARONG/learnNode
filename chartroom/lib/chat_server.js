@@ -43,24 +43,24 @@ function joinRoom(socket, room) {
     socket.broadcast.to(room).emit('message', {//向房间内其他用户知道有新用户进入了房间
         text: nicknames[socket.id] + ' has joined ' + room + '.'
     });//给除了自己以外的客户端广播消息
-        var usersInRoom =  io.sockets.adapter.rooms[room];//获取连接在该room里的所有user的socket
-        if(usersInRoom.length > 1 ){
-            var userInRoomSummary = 'Users currently in room ' + room + ":";
-            for(var index in usersInRoom.sockets){
-          
-                var userSocketId = index;
-                if(userSocketId != socket.id){
-                    if(index > 0 ){
-                        userInRoomSummary += ','
-                    }
-                    userInRoomSummary += nicknames[userSocketId];
+    var usersInRoom =  io.sockets.adapter.rooms[room];//获取连接在该room里的所有user的socket
+    if(usersInRoom.length > 1 ){
+        var userInRoomSummary = 'Users currently in room ' + room + ":";
+        for(var index in usersInRoom.sockets){
+      
+            var userSocketId = index;
+            if(userSocketId != socket.id){
+                if(index > 0 ){
+                    userInRoomSummary += ','
                 }
+                userInRoomSummary += nicknames[userSocketId];
             }
-            userInRoomSummary += '.';
-            socket.emit('message',{//将房间内其他用户汇总发给这个用户；
-                text: userInRoomSummary
-            })
         }
+        userInRoomSummary += '.';
+        socket.emit('message',{//将房间内其他用户汇总发给这个用户；
+            text: userInRoomSummary
+        })
+    }
 }
 
 //处理昵称变更请求
